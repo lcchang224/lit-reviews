@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treatment of JAK2-Negative / Idiopathic Erythrocytosis</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+<style>
+:root {
+  --bg: #f6f8fb;
+  --card: #ffffff;
+  --ink: #1c2433;
+  --muted: #5a6679;
+  --rule: #e1e6ee;
+  --accent: #2b6cb0;
+  --c-trial: #2b6cb0;
+  --c-rwe:   #2f855a;
+  --c-rev:   #6b46c1;
+  --c-meta:  #c05621;
+  --c-note:  #b45309;
+}
+html { background: var(--bg); }
+body {
+  margin: 0;
+  font-family: Inter, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.layout {
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  gap: 2.5rem;
+  max-width: 1120px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+}
+
+/* sidebar */
+nav.sidebar {
+  position: sticky;
+  top: 1.5rem;
+  align-self: start;
+  font-size: 0.85rem;
+}
+nav.sidebar .label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+nav.sidebar #TOC > ul,
+nav.sidebar ul.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  border-left: 2px solid var(--rule);
+}
+nav.sidebar #TOC ul ul { list-style: none; padding-left: 1rem; }
+nav.sidebar a {
+  display: block;
+  padding: 0.35rem 0.9rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  margin-left: -2px;
+}
+nav.sidebar a:hover { color: var(--accent); }
+nav.sidebar a.active { color: var(--ink); border-left-color: var(--accent); font-weight: 600; }
+nav.sidebar .tags { font-size: 0.78rem; }
+nav.sidebar .tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin: 0 0.25rem 0.3rem 0;
+}
+
+/* main */
+main { min-width: 0; }
+header.doc-header {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 1.5rem;
+}
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+h1 {
+  font-size: 1.55rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.01em;
+}
+.meta { font-size: 0.85rem; color: var(--muted); }
+h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.8rem 0 0.7rem;
+  scroll-margin-top: 1.5rem;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.3rem 0 0.5rem;
+}
+p { margin: 0 0 0.9rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* study cards (pandoc fenced div: ::: {.study .trial}) */
+.study {
+  border-left: 4px solid var(--rule);
+  background: var(--card);
+  padding: 0.9rem 1.1rem;
+  margin: 0.8rem 0;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 0 1px 2px rgba(20,30,50,0.04);
+}
+.study.trial { border-left-color: var(--c-trial); }
+.study.rwe   { border-left-color: var(--c-rwe); }
+.study.rev   { border-left-color: var(--c-rev); }
+.study.meta  { border-left-color: var(--c-meta); }
+.study > p:first-child { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+.study > p:nth-child(2) { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+.study > p:last-child { margin-bottom: 0; }
+.study .tag-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: #fff;
+  margin-right: 0.4rem;
+  vertical-align: 2px;
+  background: var(--muted);
+}
+.study.trial .tag-pill { background: var(--c-trial); }
+.study.rwe   .tag-pill { background: var(--c-rwe); }
+.study.rev   .tag-pill { background: var(--c-rev); }
+.study.meta  .tag-pill { background: var(--c-meta); }
+
+/* callout (pandoc fenced div: ::: callout) */
+.callout {
+  background: #fef9ed;
+  border-left: 4px solid var(--c-note);
+  padding: 0.7rem 1rem;
+  margin: 0.8rem 0 1.2rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.callout > p:first-child {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--c-note);
+  margin-bottom: 0.25rem;
+}
+.callout > p:last-child { margin-bottom: 0; }
+
+/* tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 1rem;
+  background: var(--card);
+  font-size: 0.9rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+}
+th, td { padding: 0.55rem 0.8rem; text-align: left; border-bottom: 1px solid var(--rule); }
+th { background: #eef2f7; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+tr:last-child td { border-bottom: none; }
+
+/* lists, code, blockquotes */
+ul, ol { padding-left: 1.4rem; }
+li { margin-bottom: 0.3rem; }
+code { background: #eef2f7; padding: 1px 5px; border-radius: 4px; font-size: 0.88em; }
+pre { background: #0e1116; color: #e6edf3; padding: 0.9rem 1.1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; }
+pre code { background: transparent; padding: 0; color: inherit; }
+blockquote { border-left: 3px solid var(--rule); margin: 0.8rem 0; padding: 0.2rem 0 0.2rem 1rem; color: var(--muted); }
+
+/* footnotes / references */
+.footnotes, section.footnotes {
+  margin-top: 3rem;
+  padding: 1.2rem 1.4rem;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.footnotes hr { display: none; }
+.footnotes ol { padding-left: 1.3rem; margin: 0; }
+.footnotes li { margin-bottom: 0.55rem; }
+
+@media (max-width: 820px) {
+  .layout { grid-template-columns: 1fr; gap: 1.2rem; }
+  nav.sidebar { position: static; }
+}
+
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="label">Contents</div>
+  <ul>
+  <li><a href="#tldr" id="toc-tldr">TL;DR</a></li>
+  <li><a href="#the-evidence-base-why-its-thin"
+  id="toc-the-evidence-base-why-its-thin">1. The evidence base — why
+  it’s thin</a></li>
+  <li><a
+  href="#hematocrit-threshold-and-target-what-guidelines-actually-say"
+  id="toc-hematocrit-threshold-and-target-what-guidelines-actually-say">2.
+  Hematocrit threshold and target — what guidelines actually
+  say</a></li>
+  <li><a href="#efficacy-of-phlebotomy-in-ie-whats-actually-shown"
+  id="toc-efficacy-of-phlebotomy-in-ie-whats-actually-shown">3. Efficacy
+  of phlebotomy in IE — what’s actually shown</a></li>
+  <li><a href="#aspirin-rationale-and-evidence"
+  id="toc-aspirin-rationale-and-evidence">4. Aspirin — rationale and
+  evidence</a></li>
+  <li><a href="#cytoreduction-hu-ifn-ruxolitinib"
+  id="toc-cytoreduction-hu-ifn-ruxolitinib">5. Cytoreduction (HU, IFN,
+  ruxolitinib)</a></li>
+  <li><a href="#cv-risk-optimization-the-only-universally-agreed-pillar"
+  id="toc-cv-risk-optimization-the-only-universally-agreed-pillar">6. CV
+  risk optimization — the only universally agreed pillar</a></li>
+  <li><a href="#applying-this-to-your-patient"
+  id="toc-applying-this-to-your-patient">7. Applying this to your
+  patient</a></li>
+  <li><a href="#key-references" id="toc-key-references">Key
+  references</a></li>
+  </ul>
+  <div class="label">Tags</div>
+  <div class="tags">
+    <span class="tag">#erythrocytosis</span>
+    <span class="tag">#JAK2</span>
+    <span class="tag">#phlebotomy</span>
+    <span class="tag">#aspirin</span>
+    <span class="tag">#BSH</span>
+    <span class="tag">#CYTO-PV</span>
+  </div>
+</nav>
+
+<main>
+  <header class="doc-header">
+    <div class="eyebrow">Running Review · Draft</div>
+    <h1>Treatment of JAK2-Negative / Idiopathic Erythrocytosis</h1>
+    <div class="meta">last appended 2026/05/19</div>
+  </header>
+
+<p><em>Running literature review. Compiled 2026/05/19.</em></p>
+<h2 id="tldr">TL;DR</h2>
+<p>There are <strong>no RCTs</strong> in idiopathic erythrocytosis (IE).
+Every recommendation is extrapolated from polycythemia vera (CYTO-PV) or
+based on expert consensus and retrospective audits. The current weight
+of evidence supports a <strong>conservative, individualized
+approach</strong>: avoid cytoreduction, do not phlebotomize asymptomatic
+patients to “normal” Hct, target CV risk factor optimization, and
+reserve phlebotomy + low-dose aspirin for patients with hyperviscosity
+symptoms, prior thrombosis, or significant CV risk.</p>
+<hr />
+<h2 id="the-evidence-base-why-its-thin">1. The evidence base — why it’s
+thin</h2>
+<ul>
+<li><strong>No randomized trial has ever been done in IE.</strong> The
+Tefferi 2025 ASH review and the 2026 Mayo update both state explicitly
+there are no evidence-based guidelines.</li>
+<li><strong>CYTO-PV (Marchioli, NEJM 2013)</strong> — the only RCT of
+Hct target in <em>any</em> erythrocytosis — randomized 365 PV patients
+to Hct &lt;45% vs 45–50%. Tight control reduced CV death + major
+thrombosis by ~4× (HR ~3.9). This is the foundation of the Hct &lt;45%
+target in PV. It does <strong>not</strong> apply to IE: in CYTO-PV every
+patient had JAK2-mutated clonal disease, leukocytosis, splenomegaly, and
+a thrombotic biology that IE patients do not share.</li>
+<li><strong>Curtin et al. 2025 (dual-centre 5-yr retrospective, n=206
+JAK2-negative secondary/idiopathic erythrocytosis)</strong>: venesection
+conferred <strong>no reduction in thrombosis or mortality</strong> (HR
+0.88, ns). Mean Hct fell ~0.04–0.05 over 5 yr regardless of phlebotomy.
+Thrombosis rates: VTE 2.9%, arterial 7.3% over median 6.2 yr — broadly
+comparable to age-matched general population.</li>
+<li><strong>Mayo 2020 (Gangat) and 2021 phenotypic comparison
+studies</strong>: secondary erythrocytosis has thrombosis rates
+comparable to PV at diagnosis in some series, but the driver appears to
+be the <strong>underlying CV risk profile</strong> (smoking, OSA,
+hypoxia, androgens), not the Hct itself.</li>
+</ul>
+<p>The repeated message across the 2021, 2023, 2025, and 2026
+Tefferi/Szuber syntheses: <em>“there is no substantive evidence that an
+increase in Hgb/Hct per se drives thrombosis”</em> in JAK2-unmutated
+disease.</p>
+<hr />
+<h2 id="hematocrit-threshold-and-target-what-guidelines-actually-say">2.
+Hematocrit threshold and target — what guidelines actually say</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Population</th>
+<th>Threshold to act</th>
+<th>Target Hct</th>
+<th>Grade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Idiopathic erythrocytosis (BSH 2019)</td>
+<td>Symptomatic hyperviscosity OR prior thrombosis OR high CV risk</td>
+<td><strong>&lt;0.55</strong> generally; <strong>&lt;0.45</strong> if
+prior thrombosis</td>
+<td>2C</td>
+</tr>
+<tr>
+<td>Hypoxic pulmonary disease (BSH 2019)</td>
+<td>Hct &gt;0.56 with hyperviscosity symptoms</td>
+<td><strong>0.50–0.52</strong> (lower is <em>detrimental</em>)</td>
+<td>2C; LTOT 1A</td>
+</tr>
+<tr>
+<td>Post-renal transplant (BSH 2019)</td>
+<td>First line is ACEi/ARB, not phlebotomy</td>
+<td>If venesecting, <strong>&lt;0.50</strong></td>
+<td>2B for ACEi, 2C for venesection</td>
+</tr>
+<tr>
+<td>Congenital erythrocytosis (BSH 2019)</td>
+<td>Symptoms or prior thrombosis</td>
+<td><strong>&lt;0.52</strong> (do not normalize)</td>
+<td>2C</td>
+</tr>
+<tr>
+<td>Polycythemia vera (CYTO-PV; for contrast)</td>
+<td>All patients</td>
+<td><strong>&lt;0.45</strong></td>
+<td>1B (RCT)</td>
+</tr>
+</tbody>
+</table>
+<p>Tefferi/Szuber 2025 and 2026 reject any fixed Hct threshold in IE —
+they recommend “a Hct level that provides relief” of hyperviscosity
+symptoms, with <strong>frequency of phlebotomy driven by symptoms, not
+numbers.</strong></p>
+<p><strong>Key practical points:</strong> - The 0.45 PV target is not
+generalizable. Driving Hct to &lt;0.45 in IE has no evidence behind it
+and in secondary erythrocytosis (especially hypoxic) is harmful. -
+“Idiopathic” Hct 0.45–0.55 is observation territory unless symptomatic
+or other risk factors push you to act. - Avoid iatrogenic iron
+deficiency from repeated venesection — it causes its own symptoms
+(fatigue, cognitive fog, pica) that get mistaken for hyperviscosity,
+prompting more phlebotomy, etc.</p>
+<hr />
+<h2 id="efficacy-of-phlebotomy-in-ie-whats-actually-shown">3. Efficacy
+of phlebotomy in IE — what’s actually shown</h2>
+<ul>
+<li><strong>Symptomatic improvement</strong>: real but anecdotal —
+headache, plethora, hyperviscosity respond. No controlled data; effect
+size unknown.</li>
+<li><strong>Thrombosis reduction</strong>: not demonstrated in IE or
+secondary erythrocytosis (Curtin 2025). The CYTO-PV benefit has
+<em>never</em> been reproduced outside the JAK2-positive context.</li>
+<li><strong>Mortality</strong>: no signal in either direction.</li>
+<li><strong>Harms</strong>: iron deficiency (very common, often
+unrecognized), reactive thrombocytosis (rarely clinically significant),
+vasovagal events, time/cost burden, and in elderly patients with
+cardiovascular disease the volume shift is not trivial.</li>
+</ul>
+<p><strong>Bottom line on phlebotomy</strong>: it is a
+<em>symptom-control</em> intervention in IE, not a thrombosis-prevention
+one. Frame the discussion with the patient that way.</p>
+<hr />
+<h2 id="aspirin-rationale-and-evidence">4. Aspirin — rationale and
+evidence</h2>
+<p>The aspirin question splits cleanly:</p>
+<p><strong>Where the evidence actually lives:</strong> - <strong>ECLAP
+(Landolfi, NEJM 2004)</strong> — RCT of low-dose ASA in PV, ~50%
+relative reduction in composite CV endpoint. PV only. - No RCT in IE or
+secondary erythrocytosis.</p>
+<p><strong>Rationale for offering ASA in IE:</strong> - IE patients
+often carry standard CV risk factors (smoking, dyslipidemia, OSA,
+sedentary, obesity). - Some series suggest a CV risk profile slightly
+higher than the general population — possibly because the erythrocytosis
+itself is a marker of unrecognized cardiovascular/metabolic dysfunction
+(OSA, fatty liver, androgen use), not because of viscosity. - Low-dose
+ASA (75–100 mg) has a modest absolute thrombotic benefit and a known
+bleeding cost; the calculus is the same as in any non-MPN patient.</p>
+<p><strong>Recommendations across guidelines:</strong> - <strong>BSH
+2019 (IE)</strong>: “Aspirin if otherwise clinically indicated for
+primary or secondary prevention” — Grade <strong>1B</strong>. In other
+words, treat aspirin like you would in any matched non-erythrocytotic
+adult — don’t add it <em>because</em> of the erythrocytosis, but don’t
+withhold it either. - <strong>Tefferi 2025/2026</strong>: ASA “may be
+considered” for hyperviscosity symptoms, prior thrombosis, or CV
+comorbidity. - <strong>No guideline recommends ASA in asymptomatic IE
+without CV indications.</strong></p>
+<p><strong>Where ASA is NOT recommended:</strong> - Post-transplant
+erythrocytosis: BSH says no benefit (Grade 2C). - Pure asymptomatic IE
+without CV risk factors: no rationale. - Congenital erythrocytosis: only
+“consider” (2C) — but several conditions (e.g., high-affinity Hb) have
+very low thrombosis rates and ASA carries net harm in young patients
+with decades of exposure.</p>
+<hr />
+<h2 id="cytoreduction-hu-ifn-ruxolitinib">5. Cytoreduction (HU, IFN,
+ruxolitinib)</h2>
+<ul>
+<li><strong>Not recommended in IE</strong> — consistent across BSH 2019,
+Tefferi 2021/2023/2025/2026 (Grade 1B against, BSH).</li>
+<li>One exception: <strong>ruxolitinib in Chuvash polycythemia</strong>
+(VHL R200W) — “consider” (BSH 2C), based on a small case series.
+Unlikely relevant in Taiwan.</li>
+<li>HIF2A inhibitors (e.g., belzutifan) are being explored for HIF2A
+gain-of-function congenital erythrocytosis; not standard of care.</li>
+</ul>
+<hr />
+<h2 id="cv-risk-optimization-the-only-universally-agreed-pillar">6. CV
+risk optimization — the only universally agreed pillar</h2>
+<p>Every guideline and every review converges on this as the
+<strong>most important intervention</strong>:</p>
+<ul>
+<li>Smoking cessation (often the single biggest lever).</li>
+<li>BP control, statin if indicated.</li>
+<li>OSA screening/treatment.</li>
+<li>Weight, glycemic control, fatty liver workup.</li>
+<li>Discontinue exogenous androgens if applicable.</li>
+<li>Avoid SGLT2i if the erythrocytosis is plausibly drug-induced (now a
+well-recognized cause — Gangat 2023).</li>
+</ul>
+<p>These interventions have <em>direct</em> evidence (general cardiology
+literature) and address the most likely true thrombotic driver in
+IE.</p>
+<hr />
+<h2 id="applying-this-to-your-patient">7. Applying this to your
+patient</h2>
+<p>49F, Hct 49%, JAK2 V617F + exon 12 negative, EPO normal, no obvious
+secondary cause, no CV risk factors, no prior thrombosis, no symptoms
+mentioned.</p>
+<p><strong>By BSH 2019 + Tefferi 2025 logic:</strong> - Hct 0.49 is
+below the 0.55 action threshold for asymptomatic IE. - No prior
+thrombosis → no indication to target &lt;0.45. - No CV indication → ASA
+not indicated solely on the basis of erythrocytosis. - No role for
+cytoreduction.</p>
+<p><strong>Reasonable plan once the missing workup (P50, COHb, overnight
+oximetry, contrast imaging) is complete and negative:</strong> 1. Label
+as <strong>idiopathic erythrocytosis</strong> with caveats (no NGS for
+congenital genes available). 2. <strong>Observation</strong> with annual
+CBC and CV risk assessment. 3. Phlebotomy <strong>only if</strong>
+hyperviscosity symptoms develop or Hct climbs above ~0.55; in that case
+target symptom relief, not a number, and protect against iron
+deficiency. 4. ASA <strong>only if</strong> independent CV risk profile
+justifies it (current 10-yr ASCVD calculation), not for the
+erythrocytosis itself. 5. Re-check JAK2 (consider higher-sensitivity
+assay if available) every 2–3 years or if phenotype evolves (rising WBC,
+platelet count, splenomegaly, pruritus). 6. Family history — if any AD
+pattern emerges, send out for hereditary erythrocytosis panel even if
+in-house unavailable.</p>
+<hr />
+<h2 id="key-references">Key references</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Citation</th>
+<th>DOI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Szuber N, Tefferi A. JAK2 wild-type erythrocytosis: concept,
+differential diagnosis, diagnostic steps, and treatment approaches.
+<em>Hematology ASH Educ Program</em> 2025;1:183.</td>
+<td><a
+href="https://doi.org/10.1182/hematology.2025000704">10.1182/hematology.2025000704</a></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Tefferi et al. JAK2 unmutated erythrocytosis: 2026 update on
+diagnosis and management. <em>Am J Hematol</em> 2026.</td>
+<td><a
+href="https://doi.org/10.1002/ajh.70118">10.1002/ajh.70118</a></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Tefferi et al. JAK2 unmutated erythrocytosis: 2023 update. <em>Am J
+Hematol</em> 2023;98:1242.</td>
+<td><a
+href="https://doi.org/10.1002/ajh.26920">10.1002/ajh.26920</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Patnaik &amp; Tefferi. JAK2 unmutated erythrocytosis: current
+diagnostic approach and therapeutic views. <em>Leukemia</em>
+2021;35:2129.</td>
+<td><a
+href="https://doi.org/10.1038/s41375-021-01290-6">10.1038/s41375-021-01290-6</a></td>
+</tr>
+<tr>
+<td>5</td>
+<td>McMullin et al. Management of specific situations in PV and
+secondary erythrocytosis. BSH Guideline. <em>Br J Haematol</em>
+2019;184:161.</td>
+<td><a
+href="https://doi.org/10.1111/bjh.15647">10.1111/bjh.15647</a></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Marchioli et al. CYTO-PV trial: Cardiovascular events and intensity
+of treatment in PV. <em>NEJM</em> 2013;368:22.</td>
+<td><a
+href="https://doi.org/10.1056/nejmoa1208500">10.1056/nejmoa1208500</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Curtin et al. Venesection and resolution of erythrocytosis are not
+associated with reduced thrombotic risk in secondary and idiopathic
+polycythaemia. 2025.</td>
+<td>PMC12436238</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Gangat et al. SGLT2 inhibitor use and JAK2 unmutated erythrocytosis
+in 100 consecutive cases. <em>Am J Hematol</em> 2023;98:1593.</td>
+<td><a
+href="https://doi.org/10.1002/ajh.26933">10.1002/ajh.26933</a></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Randi et al. Facing erythrocytosis: international physician survey.
+<em>Am J Hematol</em> 2019;94:E255.</td>
+<td><a
+href="https://doi.org/10.1002/ajh.25545">10.1002/ajh.25545</a></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Barbarani et al. Investigation and management of erythrocytosis.
+<em>CMAJ</em> 2020;192:E913.</td>
+<td><a
+href="https://doi.org/10.1503/cmaj.191587">10.1503/cmaj.191587</a></td>
+</tr>
+</tbody>
+</table>
+
+</main>
+</div>
+</body>
+</html>
